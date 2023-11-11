@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: black;
+    color: white;
+    position: relative;
+}
+*::-webkit-scrollbar{
+    display: none;
+}
+input::placeholder{
+    color: black;
+    font-family: bold;
+}
+input {
+    height: 2.4rem;
+    color: black;
+    padding-left: .4rem;
+    outline-color: blue;
+}
+
+.Navbar h1:hover,
+.Logout:hover {
+    color: blue;
+}
+
+.Toggle {
+    width: 5rem;
+    margin: 1rem;
+    height: 2rem;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    border-radius: 20px;
+}
+
+.Toggle button {
+    position: absolute;
+    top: 2px;
+    border-radius: 50%;
+    width: 1.7rem;
+    height: 1.7rem;
+    background-color: rgb(0, 0, 0);
+}
+
+
+button:disabled{
+    background-color: grey;
+}
