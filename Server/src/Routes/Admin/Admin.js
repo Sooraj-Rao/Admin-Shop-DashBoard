@@ -191,37 +191,5 @@ router.delete("/viewUserMessage/:id", async (req, res) => {
   }
 });
 
-//Login
-
-// router.post("/login", async (req, res) => {
-//   const { password, email } = req.body;
-
-//   const user = await Usermodel.findOne({ email });
-//   try {
-//     if (!user) return res.json({ message: "Invalid Email" });
-
-//     if (password !== user.password) {
-//       return res.json({ message: " Password is Incorrect" });
-//     }
-//     res.json({ message: "Login Succesfully", id: user._id });
-//   } catch (error) {
-//     res.json({ message: "Some Error Occurred in BackEnd" });
-//     console.log("Registration Error: ", error);
-//   }
-// });
-
-// //Conact
-
-// router.post("/contact", async (req, res) => {
-//   const { message, email } = req.body;
-//   try {
-//     const NewMessage = new contactModel({ message, email });
-//     await NewMessage.save();
-//     res.json({ message: "Message sent" });
-//   } catch (error) {
-//     res.json({ message: "Some Error Occurred in BackEnd" });
-//     console.log("Conatct Error: ", error);
-//   }
-// });
 
 export { router as AdminRouter };

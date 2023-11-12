@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,11 +7,15 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { MyContext } from "../../Context/Context";
 
 const ViewUser = () => {
   const [data, setdata] = useState([]);
   const [load, setload] = useState(false);
   const [deleteId, setdeleteId] = useState("");
+
+  const context = useContext(MyContext);
+  const { Server } = context;
 
   const IsShow = useSelector((state) => state.show);
 
@@ -26,7 +30,7 @@ const ViewUser = () => {
 
   const deleteUser = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:3000/viewUser/${id}`);
+      const res = await axios.delete(`${Server}/viewUser/${id}`);
       let { message } = res.data;
       if (message == "Successfully Deleted") {
         toast.success(message);
@@ -44,7 +48,7 @@ const ViewUser = () => {
 
   const fetch = async () => {
     setload(true);
-    const res = await axios.get("http://localhost:3000/viewUser");
+    const res = await axios.get(`${Server}/viewUser`);
     setdata(res.data);
     setload(false);
   };

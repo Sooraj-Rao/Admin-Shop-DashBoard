@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import PulseLoader from "react-spinners/PulseLoader";
+import { MyContext } from "../../Context/Context";
 
 const Dashboard = () => {
   const [data, setdata] = useState([]);
   const [loader, setloader] = useState(true);
 
+  const shop = localStorage.getItem("shopId");
+
+  const contex = useContext(MyContext);
+  const { Server } = contex;
   useEffect(() => {
     try {
       fetch = async () => {
-        const res = await axios.get("http://localhost:3000/dashboard");
+        const res = await axios.get(`${Server}/dashboard/${shop}`);
         setdata(res.data);
         setloader(false);
       };
@@ -22,24 +27,24 @@ const Dashboard = () => {
 
   let datas = [
     {
-      text: "Total  Users",
-      number: data?.UserLength,
+      text: "Services",
+      number: data?.ServiceLength || 0,
       class: <i className="fa-solid fa-user"></i>,
     },
     {
-      text: "Total Shops",
-      number: data?.ShopLength,
+      text: " Request Recieved",
+      number: data?.RequestLength || 0,
+      class: <i className="fa-solid fa-message"></i>,
+    },
+    {
+      text: "Bills Generated ",
+      number: data?.BillLength || 0,
       class: <i className="fa-solid fa-shop"></i>,
     },
     {
       text: " Feedbacks Recieved",
-      number: data?.ContactsLength,
+      number: data?.FeedbackLength || 0,
       class: <i className="fa-solid fa-comments"></i>,
-    },
-    {
-      text: " Messages Sent",
-      number: data?.MessageLength,
-      class: <i className="fa-solid fa-message"></i>,
     },
   ];
   return (
@@ -63,7 +68,7 @@ const Dashboard = () => {
           w-80
           lg:w-2/5
           xl:w-2/6 
-          
+          pb-3
           "
           key={index}
         >

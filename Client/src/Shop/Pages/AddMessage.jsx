@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,7 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { MyContext } from "../../Context/Context.jsx";
 
 const AddMessage = () => {
   const [message, setmessage] = useState([]);
@@ -19,18 +20,16 @@ const AddMessage = () => {
   });
   const [deleteId, setdeleteId] = useState();
 
+  const context = useContext(MyContext);
+  const { Server } = context;
   const dispatch = useDispatch();
-
   const ShopDetails = useSelector((state) => state.shopData);
 
   const AddMessage = async (e) => {
     e.preventDefault();
     try {
       setloader(true);
-      const res = await axios.post(
-        "http://localhost:3000/ShopAddMessage",
-        data
-      );
+      const res = await axios.post(`${Server}/ShopAddMessage`, data);
       res.data.message !== "Message Added"
         ? toast.info(res.data.message)
         : toast.success(res.data.message);
@@ -70,9 +69,7 @@ const AddMessage = () => {
 
   const deleteMessage = async (deleteId) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:3000/shopAddMessage/${deleteId}`
-      );
+      const res = await axios.delete(`${Server}/shopAddMessage/${deleteId}`);
       let { message } = res.data;
       if (message == "Successfully Deleted") {
         toast.success(message);
@@ -90,9 +87,7 @@ const AddMessage = () => {
   const fetchMessage = async () => {
     if (data.email.length > 0) {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/ShopAddMessage/${data.email}`
-        );
+        const res = await axios.get(`${Server}/ShopAddMessage/${data.email}`);
         res && setmessage(res.data);
       } catch (error) {
         toast.error("Error Fetching Messages");

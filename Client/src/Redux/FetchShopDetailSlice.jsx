@@ -20,8 +20,9 @@ export default FetchShopDetail.reducer;
 
 export const getData = () => {
   return async function getDataThunk(dispatch, getState) {
-    const res = await axios.get(`http://localhost:3000/manageShop/${shop}`);
+    const Server = import.meta.env.VITE_SERVER;
+    const res = await axios.get(`${Server}/manageShop/${shop}`);
     dispatch(FetchedShopData(res.data));
   };
 };
-3
+3;

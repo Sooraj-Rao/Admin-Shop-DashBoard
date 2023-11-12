@@ -9,6 +9,29 @@ import { BillModel } from "../../Model/Shop/Bill.js";
 
 const router = express.Router();
 
+//Dashboard
+router.get("/dashboard/:shopId", async (req, res) => {
+  const { shopId } = req.params;
+  try {
+    const Bills = await BillModel.find({ shopId });
+    const BillLength = Bills.length;
+    const Feedback = await UserToShopMsgModel.find({ shopId });
+    const FeedbackLength = Feedback.length;
+    const Servies = await ServiceModel.find({ shopId });
+    const ServiceLength = Servies.length;
+    const Request = await BookedServiceModel.find({ shopId });
+    const RequestLength = Request.length;
+    res.json({
+      BillLength,
+      FeedbackLength,
+      ServiceLength,
+      RequestLength,
+    });
+  } catch (error) {
+    return res.json({ message: "Error Dashoboard Shop -BackEnd" });
+  }
+});
+
 //Add Message
 
 router.post("/ShopAddMessage", async (req, res) => {

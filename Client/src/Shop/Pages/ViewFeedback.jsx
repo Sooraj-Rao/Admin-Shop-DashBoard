@@ -1,14 +1,18 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { MyContext } from "../../Context/Context";
 
 const ViewFeedback = () => {
   const [data, setdata] = useState([]);
   const shopId = localStorage.getItem("shopId");
 
+  const context = useContext(MyContext);
+  const { Server } = context;
+
   const fetchMessage = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/viewMessage/${shopId}`
+        `${Server}/viewMessage/${shopId}`
       );
       setdata(res.data);
     } catch (error) {

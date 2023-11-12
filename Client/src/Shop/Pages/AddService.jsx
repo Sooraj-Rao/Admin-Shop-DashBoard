@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,7 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { MyContext } from "../../Context/Context";
 
 const AddService = () => {
   const [services, setServices] = useState([]);
@@ -26,14 +27,16 @@ const AddService = () => {
 
   const dispatch = useDispatch();
 
+  const context = useContext(MyContext);
+  const { Server } = context;
+
   let shopId = localStorage.getItem("shopId");
 
   const AddService = async (e) => {
     e.preventDefault();
-    console.log(data);
     try {
       setloader({ ...loader, loader1: true });
-      const res = await axios.post("http://localhost:3000/addService", data);
+      const res = await axios.post(`${Server}/addService`, data);
       setloader({ ...loader, loader1: false });
 
       if (res.data.message !== "Service Added") {
@@ -70,15 +73,12 @@ const AddService = () => {
 
   const deleteservices = async (deleteId) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:3000/viewService/${deleteId}`
-      );
+      const res = await axios.delete(`${Server}/viewService/${deleteId}`);
       let { message } = res.data;
       if (message == "Successfully Deleted") {
         toast.success(message);
       } else {
         toast.error(message);
-        console.log(message);
       }
       dispatch(Yes());
     } catch (error) {
@@ -91,9 +91,7 @@ const AddService = () => {
   const fetchservices = async () => {
     try {
       setloader({ ...loader, loader2: true });
-      const res = await axios.get(
-        `http://localhost:3000/viewService/${shopId}`
-      );
+      const res = await axios.get(`${Server}/viewService/${shopId}`);
       res && setServices(res.data);
       setloader({ ...loader, loader2: false });
     } catch (error) {

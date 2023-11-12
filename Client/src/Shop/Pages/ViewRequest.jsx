@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,11 +8,15 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { MyContext } from "../../Context/Context";
 
 const ViewRequest = ({ Info }) => {
   const [data, setdata] = useState([]);
   const [deleteId, setdeleteId] = useState();
   const [load, setload] = useState(false);
+
+  const context = useContext(MyContext);
+  const { Server } = context;
 
   const shopId = localStorage.getItem("shopId");
   const [loader, setloader] = useState({
@@ -24,9 +28,7 @@ const ViewRequest = ({ Info }) => {
 
   const fetchRequest = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3000/viewRequest/${shopId}`
-      );
+      const res = await axios.get(`${Server}/viewRequest/${shopId}`);
       setloader({ ...loader, loader1: false });
       res && setdata(res.data);
     } catch (error) {
@@ -48,9 +50,7 @@ const ViewRequest = ({ Info }) => {
   const Confirm = async (id) => {
     try {
       setloader({ ...loader, loader2: true });
-      const res = await axios.post(
-        `http://localhost:3000/viewRequest/confirm/${id}`
-      );
+      const res = await axios.post(`${Server}/viewRequest/confirm/${id}`);
       toast.success(res.data.message);
       setloader({ ...loader, loader2: false });
       setload(true);
@@ -67,7 +67,7 @@ const ViewRequest = ({ Info }) => {
     try {
       console.log("Done");
       const res = await axios.delete(
-        `http://localhost:3000/viewRequest/delete/${deleteId}`
+        `${Server}/viewRequest/delete/${deleteId}`
       );
       console.log("Done");
       let { message } = res.data;

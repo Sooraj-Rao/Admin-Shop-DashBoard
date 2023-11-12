@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +7,7 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import Mycontext, { MyContext } from "../../Context/Context";
 
 const AddMessage = () => {
   const [message, setmessage] = useState([]);
@@ -18,6 +19,9 @@ const AddMessage = () => {
     MessageTitle: "",
     Message: "",
   });
+
+  const context = useContext(MyContext);
+  const { Server } = context;
 
   const [deleteId, setdeleteId] = useState();
 
@@ -33,9 +37,7 @@ const AddMessage = () => {
   };
   const deleteMessage = async (deleteId) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:3000/addMessage/${deleteId}`
-      );
+      const res = await axios.delete(`${Server}/addMessage/${deleteId}`);
       let { message } = res.data;
       if (message == "Successfully Deleted") {
         toast.success(message);
@@ -54,7 +56,7 @@ const AddMessage = () => {
     e.preventDefault();
     try {
       setloader({ ...loader, loader1: true });
-      const res = await axios.post("http://localhost:3000/addMessage", data);
+      const res = await axios.post(`${Server}/addMessage`, data);
       res.data.message !== "Message Added"
         ? toast.info(res.data.message)
         : toast.success(res.data.message);
@@ -75,7 +77,7 @@ const AddMessage = () => {
   const fetchMessage = async () => {
     try {
       setloader({ ...loader, loader2: true });
-      const res = await axios.get("http://localhost:3000/addMessage");
+      const res = await axios.get(`${Server}/addMessage`);
       res && setmessage(res.data);
       setloader({ ...loader, loader2: false });
     } catch (error) {

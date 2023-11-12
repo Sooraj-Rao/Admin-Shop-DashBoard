@@ -1,12 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PulseLoader from "react-spinners/PulseLoader";
+import Mycontext from "../../Context/Context";
 
 const BillGeneration = ({ requestInfo, setrequestInfo }) => {
   const [discount, setDisocunt] = useState(0);
   const [total, settotal] = useState(0);
+
+  const context = useContext(Mycontext);
+  const Server = context;
 
   const handleChange = (e) => {
     setDisocunt(e.target.value);
@@ -27,9 +31,9 @@ const BillGeneration = ({ requestInfo, setrequestInfo }) => {
     };
     console.log(data);
     try {
-      const res = await axios.post("http://localhost:3000/bill", data);
+      const res = await axios.post(`${Server}/bill`, data);
       toast.success(res.data.message);
-      setrequestInfo('');
+      setrequestInfo("");
     } catch (error) {
       console.log(error);
       toast.error(res.data.message);
@@ -39,9 +43,13 @@ const BillGeneration = ({ requestInfo, setrequestInfo }) => {
   return (
     <div className=" bg-slate-800 w-[80%] right-0 min-h-screen z-10 absolute">
       <div className=" flex justify-center">
-
-      <h1 className=" text-center text-2xl mt-3">Bill Generation</h1>
-      <span className=" absolute right-3 top-5 bg-red-700 px-2 rounded cursor-pointer" onClick={()=> setrequestInfo('')}>Cancel</span>
+        <h1 className=" text-center text-2xl mt-3">Bill Generation</h1>
+        <span
+          className=" absolute right-3 top-5 bg-red-700 px-2 rounded cursor-pointer"
+          onClick={() => setrequestInfo("")}
+        >
+          Cancel
+        </span>
       </div>
       <div className=" mt-5 bg-zinc-900 h-screen">
         <h1 className=" text-center font-semibold text-4xl italic py-2 text-blue-300">

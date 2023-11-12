@@ -8,6 +8,7 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { MyContext } from "../../Context/Context";
 
 const ViewFeedback = () => {
   const [toggle, settoggle] = useState(true);
@@ -15,6 +16,9 @@ const ViewFeedback = () => {
   const [FetchMessage, setFetchMessage] = useState([]);
   const [load, setload] = useState(false);
   const [deleteId, setdeleteId] = useState("");
+
+  const contextRef = useContext(MyContext);
+  const { Server } = contextRef;
 
   const IsShow = useSelector((state) => state.show);
 
@@ -33,9 +37,7 @@ const ViewFeedback = () => {
 
   const deleteMessage = async (id) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:3000/viewUserMessage/${id}`
-      );
+      const res = await axios.delete(`${Server}/viewUserMessage/${id}`);
       let { message } = res.data;
       if (message == "Successfully Deleted") {
         toast.success(message);
@@ -54,10 +56,10 @@ const ViewFeedback = () => {
   const fetch = async () => {
     setload(true);
     if (toggle) {
-      const res = await axios.get("http://localhost:3000/viewUserMessage/user");
+      const res = await axios.get(`${Server}/viewUserMessage/user`);
       setFetchMessage(res.data);
     } else {
-      const res = await axios.get("http://localhost:3000/viewUserMessage/shop");
+      const res = await axios.get(`${Server}/viewUserMessage/shop`);
       setFetchMessage(res.data);
     }
     setload(false);

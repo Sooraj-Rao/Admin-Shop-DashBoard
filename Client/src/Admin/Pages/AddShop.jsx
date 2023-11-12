@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PulseLoader from "react-spinners/PulseLoader";
+import Mycontext, { MyContext } from "../../Context/Context";
 
 const AddShop = () => {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ const AddShop = () => {
     password: "",
   });
 
+  const context = useContext(MyContext);
+  const { Server } = context;
+
   const handlechange = (e) => {
     setinput({ ...input, [e.target.name]: e.target.value });
   };
@@ -27,7 +31,7 @@ const AddShop = () => {
     const phone = Number(input.phone);
     try {
       setloader(true);
-      const res = await axios.post("http://localhost:3000/addShop", {
+      const res = await axios.post(`${Server}/addShop`, {
         ...input,
         phone,
       });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,16 +8,20 @@ import { show } from "../../Redux/AreYouSureSlice";
 import { Yes } from "../../Redux/YesSureSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import Mycontext, { MyContext } from "../../Context/Context";
 
 const ViewBill = () => {
   const [data, setdata] = useState([]);
   const [loader, setloader] = useState(true);
 
+  const context = useContext(MyContext);
+  const { Server } = context;
+
   const shopId = localStorage.getItem("shopId");
 
   const fetchBills = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/viewBill/${shopId}`);
+      const res = await axios.get(`${Server}/viewBill/${shopId}`);
       setloader(false);
       res && setdata(res.data);
     } catch (error) {

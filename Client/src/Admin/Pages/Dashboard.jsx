@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import PulseLoader from "react-spinners/PulseLoader";
+import Mycontext, { MyContext } from "../../Context/Context";
 
 const Dashboard = () => {
   const [data, setdata] = useState([]);
   const [loader, setloader] = useState(true);
 
+  const context = useContext(MyContext);
+  const { Server } = context;
+
   useEffect(() => {
     try {
       fetch = async () => {
-        const res = await axios.get("http://localhost:3000/dashboard");
+        const res = await axios.get(`${Server}/dashboard`);
         setdata(res.data);
         setloader(false);
       };

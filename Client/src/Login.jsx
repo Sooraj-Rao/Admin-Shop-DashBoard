@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Admin from "./Admin";
 import Shop from "./Shop";
 import axios from "axios";
 import PulseLoader from "react-spinners/PulseLoader";
+import { MyContext } from "./Context/Context";
 
 const Login = () => {
   const [data, setdata] = useState({
@@ -13,6 +14,9 @@ const Login = () => {
   const [shop, setshop] = useState(false);
   const [loader, setloader] = useState(false);
 
+  const context = useContext(MyContext);
+  const { Server } = context;
+
   let app = localStorage.getItem("admin");
   let app2 = localStorage.getItem("shop");
   console.log("Admin:", app, ", Shop:", app2);
@@ -20,7 +24,7 @@ const Login = () => {
   const verify = async () => {
     try {
       setloader(true);
-      const res = await axios.post("http://localhost:3000/auth/login", data);
+      const res = await axios.post(`${Server}/auth/login`, data);
       setloader(false);
       if (res.data.code == "admin") {
         localStorage.setItem("admin", true);
