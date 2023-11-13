@@ -35,7 +35,7 @@ export { Navbar };
 const NavbarSide = ({ Navshow,setSlideLogout,SlideLogout }) => {
   return (
     <div
-      className={`duration-300 z-50 overflow-hidden h-screen bg-slate-950 absolute right-0 
+      className={`duration-300 z-50 overflow-hidden h-screen bg-slate-950 fixed right-0 
     ${Navshow ? `w-4/6` : `w-0`}
     ${Navshow && `sm:w-1/2 `}
     `}

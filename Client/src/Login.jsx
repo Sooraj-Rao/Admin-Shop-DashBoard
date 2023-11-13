@@ -19,7 +19,6 @@ const Login = () => {
 
   let app = localStorage.getItem("admin");
   let app2 = localStorage.getItem("shop");
-  console.log("Admin:", app, ", Shop:", app2);
 
   const verify = async () => {
     try {
